@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PagoJugadores</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script>
+
+    var TotalPuntos = 0;
+
+    function PuntosSeleccion() {
+        var seleccion = document.querySelector('input[name="seleccion"]:checked').value;
+
+        if (seleccion == "departamental") {
+            TotalPuntos += 5;
+        } else if (seleccion == "nacional") {
+            TotalPuntos += 10;
+        }
+    }
+
+    function PuntosEquipos() {
+        var equiposPro = document.getElementById("equiposPro").value;
+        TotalPuntos += parseInt(equiposPro) * 2;  // convertir el valor a entero
+    }
+
+    function PuntosGoles() {
+        var golesPro = document.getElementById("golesPro").value;
+        golesPro = parseInt(golesPro);  //  convertir el valor a entero
+
+        if (golesPro >= 10 && golesPro < 20) {
+            TotalPuntos += 2;
+        } else if (golesPro >= 20 && golesPro < 40) {
+            TotalPuntos += 6;
+        } else if (golesPro >= 40 && golesPro <= 100) {
+            TotalPuntos += 12;
+        } else if (golesPro > 100) {
+            TotalPuntos += 20;
+        }
+    }
+
+    function PuntosPosicion() {
+        var posicionJugador = document.getElementById("posicionJugador").value;
+
+        if (posicionJugador == "portero") {
+            TotalPuntos += 5;
+        } else if (posicionJugador == "defensa") {
+            TotalPuntos += 4;
+        } else if (posicionJugador == "mediocampo") {
+            TotalPuntos += 5;
+        } else if (posicionJugador == "delantero") {
+            TotalPuntos += 8;
+        }
+    }
+
+    function calcular() {
+        TotalPuntos = 0;  // Reiniciar TotalPuntos antes de calcular
+        var ValorPunto = 300;
+
+        PuntosSeleccion();
+        PuntosEquipos();
+        PuntosGoles();
+        PuntosPosicion();
+
+        var Pago = TotalPuntos * ValorPunto;
+
+        document.getElementById("PrecioTotal").innerHTML = "El precio del jugador es: " + Pago;
+    }
+
+    function resetear() {
+        document.getElementById("formularioJugador").reset();
+        document.getElementById("PrecioTotal").innerHTML = "El precio del jugador es: ";
+        TotalPuntos = 0;
+    }
+
+</script>
+
+<center>
+    <form id="formularioJugador">
+        <h1>Calcule su salario para su jugador</h1><br>
+
+        <label>¿Ha jugado en alguna selección?</label><br>
+        <div class="radio-group">
+            <label for="seleccionDepartamental">Departamental</label>
+            <input type="radio" id="seleccionDepartamental" name="seleccion" value="departamental">
+        </div>
+        <div class="radio-group">
+            <label for="seleccionNacional">Nacional</label>
+            <input type="radio" id="seleccionNacional" name="seleccion" value="nacional">
+        </div>
+        <div class="radio-group">
+            <label for="seleccionNinguna">Ninguna</label>
+            <input type="radio" id="seleccionNinguna" name="seleccion" value="ninguna" checked>
+        </div>
+
+        <label for="equiposPro">¿En cuántos equipos profesionales ha jugado?</label><br>
+        <input type="number" id="equiposPro" min="0" required><br>
+
+        <label for="golesPro">¿Cuántos goles ha anotado a nivel profesional?</label><br>
+        <input type="number" id="golesPro" min="0" required><br>
+
+        <label for="posicionJugador">¿En qué posición juega?</label><br>
+        <select id="posicionJugador" required>
+            <option value="portero">Portero</option>
+            <option value="defensa">Defensa</option>
+            <option value="mediocampo">Medio Campo</option>
+            <option value="delantero">Delantero</option>
+        </select>
+
+        <br><br>
+        <button type="button" onclick="calcular()">Calcular pago</button>
+        <button type="button" onclick="resetear()">Resetear</button>
+    </form>
+
+    <p id="PrecioTotal"></p>
+</center>
+
+</body>
+</html>
